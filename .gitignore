@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Environments
+.env
+.venv/
+env/
+
+# Local settings
+local_settings.py
+
+# Log files
+*.log
+
+# Database
+db.sqlite3
+/var/lib/postgresql/14/main/
+
+# Media files
+media/
+
+# Static files
+static/
+
+# Temporary files
+tmp/
+
+# IDE files
+.idea/
+.vscode/
+
+# Git
+.git/
+
+# Coverage reports
+.coverage
+
+# Ignore migration files (if desired)
+/migrations/
