@@ -1,5 +1,4 @@
-
-from .models import UserAccount
+from .models import UserAccount, UserLocation, State
 from django.contrib import admin
 
 
@@ -9,3 +8,5 @@ class UserAccountAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UserAccount, UserAccountAdmin)
+admin.site.register(UserLocation)
+admin.site.register(State)

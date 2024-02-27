@@ -1,5 +1,4 @@
-import random
-from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Permission
+from django.contrib.auth.models import AbstractUser, BaseUserManager, AbstractBaseUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -40,14 +39,20 @@ class UserAccount(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
+    is_profile_completed = models.BooleanField(default=False)
+    residential_address = models.TextField(blank=True, null=True)
+    office_address = models.TextField(blank=True, null=True)
+    pin_code = models.CharField(max_length=10, blank=True, null=True)
+    is_doctor = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=False)
+    is_pathology = models.BooleanField(default=False)
+    is_blood_bank = models.BooleanField(default=False)
+    is_pharmacy = models.BooleanField(default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['contact_no']
-
-    groups = models.ManyToManyField(Group, related_name='user_accounts_custom')
-    user_permissions = models.ManyToManyField(Permission, related_name='user_accounts_custom')
 
     def __str__(self):
         return self.email
@@ -64,3 +69,21 @@ class UserAccount(AbstractUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class State(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class UserLocation(models.Model):
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def __str__(self):
+        return f"Location ({self.latitude}, {self.longitude}) for {self.user.username}"

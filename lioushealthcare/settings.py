@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -24,7 +25,7 @@ SECRET_KEY = 'django-insecure-l*ce-juz4ojrt4p0w(w^04d!8h!gwo@rc2+^8tit2-da60z3s8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "https://5705-103-101-103-52.ngrok-free.app", "localhost", "127.0.0", "localhost:3000"]
 
 # Application definition
 
@@ -35,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'phonenumber_field'
     'accounts',
     'phone_numbers',
     'dj_rest_auth',
@@ -45,7 +45,17 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'vendor',
+    'consumer',
+    'doctor',
+    'pharmacy',
+    'payment',
+    'blood_bank',
+    'labtests',
+    'cities_light'
 ]
+
+# GDAL_LIBRARY_PATH = '/usr/lib/ogdi/4.1/libgdal.so'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -110,6 +120,45 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_AUTH = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
+    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 4,
+}
+# USE_JWT = True
+
+# JWT_AUTH = {
+#     'JWT_EXPIRATION_DELTA': timedelta(days=7),
+# }
+
+SIMPLE_JWT = {
+    'TOKEN_CLAIMS': {
+        'access': 'rest_framework_simplejwt.tokens.AccessToken',
+        'refresh': 'rest_framework_simplejwt.tokens.RefreshToken',
+    },
+}
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = True
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# REST_AUTH = {
+#     'USE_JWT': True,
+#     'JWT_AUTH_HTTPONLY': False,
+# }
+
+AUTH_USER_MODEL = 'accounts.UserAccount'
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -125,6 +174,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -132,5 +183,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TWILIO_AUTH_TOKEN = "2f7272f06c0e22ce9ba6c568f7741b6e"
+# TWILIO_AUTH_TOKEN = "6940a16339c99f5207a920230e394f3d"
 TWILIO_ACCOUNT_SID = "AC3667d8c4a74a8b1771c35f3ee59c46c5"
+# TWILIO_ACCOUNT_SID = "AC149c560a577f35e0efe95f8de014c62e"
 TWILIO_VERIFY_SERVICE_SID = "VA0b590c9152b878b7d72405e01c4a92d5"
+# TWILIO_VERIFY_SERVICE_SID = "VA3e9be759973cd571710b5c625383315c"
+
+# TWILIO_AUTH_TOKEN = "f1ee0de882dc8dbd2a474afbfe267955"
+# TWILIO_ACCOUNT_SID = "AC49de0f3b5a225c1bcc713ec57e1229f6"
+# TWILIO_VERIFY_SERVICE_SID = "VA607d822260a3a9d1f66ef0f8b1709a7f"

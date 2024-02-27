@@ -16,14 +16,17 @@ Including another URLconf
 from django.conf import settings
 from django.urls import re_path, include
 from django.contrib import admin
-from django.urls import path
+from django.conf.urls.static import static
 
 urlpatterns = [
     re_path(r'admin/', admin.site.urls),
     re_path(r'^accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
+    re_path(r'^vendor/', include(('vendor.urls', 'vendor'), namespace='vendor')),
+    re_path(r'^doctor/', include(('doctor.urls', 'doctor'), namespace='doctor')),
+    re_path(r'^pharmacy/', include(('pharmacy.urls', 'pharmacy'), namespace='pharmacy')),
+    re_path(r'^blood_bank/', include(('blood_bank.urls', 'blood_bank'), namespace='blood_bank')),
+    re_path(r'^labtest/', include(('labtests.urls', 'blood_bank'), namespace='labtests')),
+
 ]
 if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
